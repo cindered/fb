@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Happy Birthday Fé!!</title>
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4549/4549811.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://scx2.b-cdn.net/gfx/news/2018/1-thenightskym.jpg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-family: 'Tangerine', cursive;
+      color: rgb(255, 255, 255);
+      text-align: center;
+      overflow: hidden;
+    }
+    img {
+      max-width: 60%;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+    #cat, #message {
+      display: none;
+    }
+    #message {
+      color: yellow;
+      font-size: 3.5rem;
+      margin-top: 1rem;
+      text-shadow: 4px 4px 6px black;
+    }
+    #clickPrompt {
+      font-size: 3.5rem;
+      margin-top: 0.5rem;
+      text-shadow: 1px 1px 3px black;
+      animation: pulse 1.2s infinite alternate;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.1); opacity: 0.7; }
+    }
+  </style>
+</head>
+<body>
+
+  <img id="candle" src="https://media1.tenor.com/m/t3LeoU9nY7YAAAAC/birthday-janamdin.gif" alt="Candle">
+  <div id="clickPrompt">Blow the candles out!</div>
+
+  <img id="cat" src="https://media1.tenor.com/m/PbbHDS_y66QAAAAd/happy-birthday.gif" alt="Dancing Cat">
+  <div id="message">🎉 Feliz aniversário Fernanda!!🎉<br>Espero que seu dia e seu rolê no Chile esteja perfeito demais! <br> Tamo junto, Bora conquistar esse mundo!!🥸🤙</div>
+
+  <script>
+    const candle = document.getElementById('candle');
+    const clickPrompt = document.getElementById('clickPrompt');
+    const cat = document.getElementById('cat');
+    const message = document.getElementById('message');
+
+    candle.addEventListener('click', function() {
+      clickPrompt.style.display = 'none';
+      this.style.transform = 'translateY(100px) scale(0.8)';
+      this.style.opacity = '0';
+      setTimeout(() => {
+        this.style.display = 'none';
+        cat.style.display = 'block';
+        message.style.display = 'inline';
+      }, 600);
+    });
+  </script>
+
+</body>
+</html>
