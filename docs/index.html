@@ -29,7 +29,7 @@
       cursor: pointer;
       transition: transform 0.6s ease, opacity 0.6s ease;
     }
-    #cat, #message, #sideCatContainer {
+    #cat, #message, #sideCat {
       display: none;
     }
     #message {
@@ -51,59 +51,31 @@
       100% { transform: scale(1.1); opacity: 0.7; }
     }
 
-    /* Side cat container */
-    #sideCatContainer {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      margin-top: 1rem;
-      overflow: hidden;
-    }
+    /* Floating side cat */
     #sideCat {
-      position: absolute;
-      bottom: 20px;
+      position: fixed;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%); /* Start centered */
       width: 120px;
       height: auto;
-      transition: transform 3s ease-in-out;
+      transform: translate(-50%, -50%);
+      pointer-events: none; /* Don’t block clicks */
     }
 
     /* 📱 Mobile Styling */
     @media (max-width: 768px) {
-      body {
-        padding: 1rem;
-      }
-      img {
-        max-width: 80%;
-      }
-      #clickPrompt {
-        font-size: 2.2rem;
-      }
-      #message {
-        font-size: 2.2rem;
-        text-align: center;
-        margin-top: 1rem;
-        line-height: 1.3;
-      }
-      #sideCat {
-        width: 80px;
-      }
+      body { padding: 1rem; }
+      img { max-width: 80%; }
+      #clickPrompt { font-size: 2.2rem; }
+      #message { font-size: 2.2rem; line-height: 1.3; }
+      #sideCat { width: 80px; }
     }
 
     @media (max-width: 480px) {
-      #clickPrompt {
-        font-size: 1.8rem;
-      }
-      #message {
-        font-size: 1.8rem;
-      }
-      img {
-        max-width: 90%;
-      }
-      #sideCat {
-        width: 60px;
-      }
+      #clickPrompt { font-size: 1.8rem; }
+      #message { font-size: 1.8rem; }
+      img { max-width: 90%; }
+      #sideCat { width: 60px; }
     }
   </style>
 </head>
@@ -112,9 +84,7 @@
   <img id="candle" src="https://media1.tenor.com/m/t3LeoU9nY7YAAAAC/birthday-janamdin.gif" alt="Candle">
   <div id="clickPrompt">Blow the candles out!</div>
 
-  <div id="sideCatContainer">
-    <img id="sideCat" src="https://media.tenor.com/PkncL4-73CUAAAAM/cat.gif" alt="Side Cat">
-  </div>
+  <img id="sideCat" src="https://media.tenor.com/PkncL4-73CUAAAAM/cat.gif" alt="Side Cat">
   
   <img id="cat" src="https://media1.tenor.com/m/PbbHDS_y66QAAAAd/happy-birthday.gif" alt="Dancing Cat">
 
@@ -125,8 +95,34 @@
     const clickPrompt = document.getElementById('clickPrompt');
     const cat = document.getElementById('cat');
     const message = document.getElementById('message');
-    const sideCatContainer = document.getElementById('sideCatContainer');
     const sideCat = document.getElementById('sideCat');
+
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    let dx = 0.5; // horizontal speed
+    let dy = 0.5; // vertical speed
+
+    function animateCat() {
+      const catWidth = sideCat.offsetWidth;
+      const catHeight = sideCat.offsetHeight;
+
+      x += dx;
+      y += dy;
+
+      // Bounce off walls
+      if (x <= 0 || x + catWidth >= window.innerWidth) {
+        dx *= -1;
+        sideCat.style.transform = `scaleX(${dx > 0 ? 1 : -1})`; // flip cat horizontally
+      }
+      if (y <= 0 || y + catHeight >= window.innerHeight) {
+        dy *= -1;
+      }
+
+      sideCat.style.left = x + "px";
+      sideCat.style.top = y + "px";
+
+      requestAnimationFrame(animateCat);
+    }
 
     candle.addEventListener('click', function() {
       clickPrompt.style.display = 'none';
@@ -135,33 +131,11 @@
       setTimeout(() => {
         this.style.display = 'none';
         cat.style.display = 'block';
-        sideCatContainer.style.display = 'block';
+        sideCat.style.display = 'block';
         message.style.display = 'inline';
+        requestAnimationFrame(animateCat);
       }, 600);
     });
-
-    // Make side cat move left and right across the container
-    let goingRight = true;
-    function moveSideCat() {
-      const maxX = sideCatContainer.offsetWidth / 2 - sideCat.offsetWidth / 2;
-      let newX;
-
-      if (goingRight) {
-        newX = maxX; // move right
-        sideCat.style.transform = `translateX(${newX}px) scaleX(1)`;
-      } else {
-        newX = -maxX; // move left (negative X)
-        sideCat.style.transform = `translateX(${newX}px) scaleX(-1)`;
-      }
-
-      goingRight = !goingRight;
-    }
-
-    setInterval(() => {
-      if (sideCatContainer.style.display === 'block') {
-        moveSideCat();
-      }
-    }, 3000);
   </script>
 
 </body>
