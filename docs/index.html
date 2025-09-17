@@ -29,7 +29,7 @@
       cursor: pointer;
       transition: transform 0.6s ease, opacity 0.6s ease;
     }
-    #cat, #message {
+    #cat, #message, #sideCatContainer {
       display: none;
     }
     #message {
@@ -37,6 +37,8 @@
       font-size: 3.5rem;
       margin-top: 1rem;
       text-shadow: 4px 4px 6px black;
+      line-height: 1.4;
+      padding: 0 1rem;
     }
     #clickPrompt {
       font-size: 3.5rem;
@@ -48,6 +50,61 @@
       0% { transform: scale(1); opacity: 1; }
       100% { transform: scale(1.1); opacity: 0.7; }
     }
+
+    /* Side cat container */
+    #sideCatContainer {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+    #sideCat {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%); /* Start centered */
+      width: 120px;
+      height: auto;
+      transition: transform 3s ease-in-out;
+    }
+
+    /* 📱 Mobile Styling */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      img {
+        max-width: 80%;
+      }
+      #clickPrompt {
+        font-size: 2.2rem;
+      }
+      #message {
+        font-size: 2.2rem;
+        text-align: center;
+        margin-top: 1rem;
+        line-height: 1.3;
+      }
+      #sideCat {
+        width: 80px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #clickPrompt {
+        font-size: 1.8rem;
+      }
+      #message {
+        font-size: 1.8rem;
+      }
+      img {
+        max-width: 90%;
+      }
+      #sideCat {
+        width: 60px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -55,7 +112,12 @@
   <img id="candle" src="https://media1.tenor.com/m/t3LeoU9nY7YAAAAC/birthday-janamdin.gif" alt="Candle">
   <div id="clickPrompt">Blow the candles out!</div>
 
+  <div id="sideCatContainer">
+    <img id="sideCat" src="https://media.tenor.com/PkncL4-73CUAAAAM/cat.gif" alt="Side Cat">
+  </div>
+  
   <img id="cat" src="https://media1.tenor.com/m/PbbHDS_y66QAAAAd/happy-birthday.gif" alt="Dancing Cat">
+
   <div id="message">🎉 Feliz aniversário Fernanda!!🎉<br>Espero que seu dia e seu rolê no Chile esteja perfeito demais! <br> Tamo junto, Bora conquistar esse mundo!!🥸🤙</div>
 
   <script>
@@ -63,6 +125,8 @@
     const clickPrompt = document.getElementById('clickPrompt');
     const cat = document.getElementById('cat');
     const message = document.getElementById('message');
+    const sideCatContainer = document.getElementById('sideCatContainer');
+    const sideCat = document.getElementById('sideCat');
 
     candle.addEventListener('click', function() {
       clickPrompt.style.display = 'none';
@@ -71,9 +135,33 @@
       setTimeout(() => {
         this.style.display = 'none';
         cat.style.display = 'block';
+        sideCatContainer.style.display = 'block';
         message.style.display = 'inline';
       }, 600);
     });
+
+    // Make side cat move left and right across the container
+    let goingRight = true;
+    function moveSideCat() {
+      const maxX = sideCatContainer.offsetWidth / 2 - sideCat.offsetWidth / 2;
+      let newX;
+
+      if (goingRight) {
+        newX = maxX; // move right
+        sideCat.style.transform = `translateX(${newX}px) scaleX(1)`;
+      } else {
+        newX = -maxX; // move left (negative X)
+        sideCat.style.transform = `translateX(${newX}px) scaleX(-1)`;
+      }
+
+      goingRight = !goingRight;
+    }
+
+    setInterval(() => {
+      if (sideCatContainer.style.display === 'block') {
+        moveSideCat();
+      }
+    }, 3000);
   </script>
 
 </body>
